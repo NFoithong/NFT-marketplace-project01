@@ -1,2 +1,6 @@
 import type { Principal } from '@dfinity/principal';
-export interface _SERVICE {}
+import type { ActorMethod } from '@dfinity/agent';
+
+export interface _SERVICE {
+  'mint' : ActorMethod<[Uint8Array | number[], string], Principal>,
+}
