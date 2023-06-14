@@ -4,6 +4,7 @@ import NFTActorClass "../NFT/nft";
 import Principal "mo:base/Principal";
 import HashMap "mo:base/HashMap";
 import List "mo:base/List";
+import Iter "mo:base/Iter";
 
 actor OpenD {
 
@@ -53,6 +54,11 @@ actor OpenD {
         return List.toArray(userNFTs);
     };
 
+    public query func getListedNFTs() : async [Principal] {
+        let ids = Iter.toArray(mapOfListings.keys());
+        return ids;
+    };
+
     public shared (msg) func listItem(id : Principal, price : Nat) : async Text {
         var item : NFTActorClass.NFT = switch (mapOfNFTs.get(id)) {
             case null return "NFT does not exist.";
@@ -70,11 +76,37 @@ actor OpenD {
         } else {
             return "You don't own the NFT.";
         };
-
     };
 
     public query func getOpenDCanisterID() : async Principal {
         return Principal.fromActor(OpenD);
+    };
+
+    public query func isListed(id : Principal) : async Bool {
+        if (mapOfListings.get(id) == null) {
+            return false;
+        } else {
+            return true;
+        };
+    };
+
+    public query func getOriginalOwner(id : Principal) : async Principal {
+        var listing : Listing = switch (mapOfListings.get(id)) {
+            case null return Principal.fromText("");
+            case (?result) result;
+        };
+
+        return listing.itemOwner;
+    };
+
+    public query func getListedNFTPrice(id : Principal) : async Nat {
+        var listing : Listing = switch (mapOfListings.get(id)) {
+            case null return 0;
+            case (?result) result;
+        };
+
+        return listing.itemPrice;
+
     };
 
 };
