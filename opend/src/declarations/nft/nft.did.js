@@ -4,7 +4,6 @@ export const idlFactory = ({ IDL }) => {
     'getCanisterId' : IDL.Func([], [IDL.Principal], ['query']),
     'getName' : IDL.Func([], [IDL.Text], ['query']),
     'getOwner' : IDL.Func([], [IDL.Principal], ['query']),
-    'transferOwnership' : IDL.Func([IDL.Principal], [IDL.Text], []),
   });
   return NFT;
 };
